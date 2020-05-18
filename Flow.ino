@@ -1,14 +1,14 @@
 #include "FastLED.h"
 
 #define LED_TYPE  WS2811
-#define DATA_PIN       8
+#define DATA_PIN       4
 #define COLOR_ORDER  RGB
 
 #define NUM_LED      300  
-#define NUM_STRIPS     3 
+#define NUM_STRIPS     1 
 #define NUM_LEDS (NUM_LED * NUM_STRIPS)
 
-#define MILLI_AMPS 40000
+#define MILLI_AMPS 4000
 #define BRIGHTNESS   255
 
 uint16_t edges[26];   // Array used to mirror and divide
@@ -30,8 +30,8 @@ void setup() {
   Serial.setDebugOutput(true);
   Serial.println();
   initializeAudio();
-  LEDS.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LED*2, NUM_LED/2);
-  LEDS.addLeds<WS2811_PORTA, NUM_STRIPS>(leds, NUM_LED);            // Used for parallel output
+  LEDS.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LED);
+  //LEDS.addLeds<WS2811_PORTA, NUM_STRIPS>(leds, NUM_LED);            // Used for parallel output
   LEDS.setDither(false);
   LEDS.setCorrection(TypicalLEDStrip);
   LEDS.setBrightness(BRIGHTNESS);
