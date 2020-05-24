@@ -7,52 +7,54 @@
 #define qsubd(x, b)  ((x>b)?b:0)
 #define qsuba(x, b)  ((x>b)?x-b:0)
 
-#define MSGEQ7_AUDIO_PIN A0
-#define MSGEQ7_RESET_PIN  D3
-#define MSGEQ7_STROBE_PIN D4
+#define AUDIO_PIN A0
+#define RESET_PIN  D3
+#define STROBE_PIN D4
 
 #define AUDIODELAY 0
 
-#define SPECTRUMSMOOTH 0.08
-#define PEAKDECAY 0.01
-#define NOISEFLOOR 70
+#define SPECTRUMSMOOTH 0.1
+#define PEAKDECAY 0.25
+#define NOISEFLOOR 65
 
-#define AGCSMOOTH 0.003
-#define GAINUPPERLIMIT 15.0
+#define AGCSMOOTH 0.004
+#define GAINUPPERLIMIT 20.0
 #define GAINLOWERLIMIT 0.1
 
 unsigned int spectrumValue[7];
 float spectrumDecay[7] = {0};
 float spectrumPeaks[7] = {0};
-float audioAvg = 270.0;
-float gainAGC = 0.0;
+float audioAvg = 300.0;
+float gainAGC = 1.0;
 
 uint8_t spectrumByte[7];
-
 uint8_t spectrumAvg;
 
 unsigned long currentMillis;
 unsigned long audioMillis;
 
 void initializeAudio() {
-  pinMode(MSGEQ7_AUDIO_PIN, INPUT);
-  pinMode(MSGEQ7_RESET_PIN, OUTPUT);
-  pinMode(MSGEQ7_STROBE_PIN, OUTPUT);
-  digitalWrite(MSGEQ7_RESET_PIN, LOW);
-  digitalWrite(MSGEQ7_STROBE_PIN, HIGH);
+  pinMode(AUDIO_PIN, INPUT);
+  pinMode(RESET_PIN, OUTPUT);
+  pinMode(STROBE_PIN, OUTPUT);
+  digitalWrite(RESET_PIN, LOW);
+  digitalWrite(STROBE_PIN, HIGH);
 }
 
 void readAudio() {
-  static PROGMEM const byte spectrumFactors[7] = {9, 11, 13, 13, 12, 12, 13};
-  digitalWrite(MSGEQ7_RESET_PIN, HIGH);
+  static PROGMEM const byte spectrumFactors[7] = {6, 8, 8, 8, 7, 7, 10};
+  digitalWrite(RESET_PIN, HIGH);
   delayMicroseconds(5);
-  digitalWrite(MSGEQ7_RESET_PIN, LOW);
+  digitalWrite(RESET_PIN, LOW);
+  delayMicroseconds(10);
   int analogsum = 0;
   for (int i = 0; i < 7; i++) {
-    digitalWrite(MSGEQ7_STROBE_PIN, LOW);
-    delayMicroseconds(50);
-    spectrumValue[i] = analogRead(MSGEQ7_AUDIO_PIN);
-    digitalWrite(MSGEQ7_STROBE_PIN, HIGH);
+    digitalWrite(STROBE_PIN, LOW);
+    delayMicroseconds(25);
+    //spectrumValue[i] = (analogRead(AUDIO_PIN)+analogRead(AUDIO_PIN))/2;
+    spectrumValue[i] = analogRead(AUDIO_PIN);
+    digitalWrite(STROBE_PIN, HIGH);
+    delayMicroseconds(30);
     if (spectrumValue[i] < NOISEFLOOR) {
       spectrumValue[i] = 0;
     } else {
@@ -68,7 +70,7 @@ void readAudio() {
   }
   audioAvg = (1.0 - AGCSMOOTH) * audioAvg + AGCSMOOTH * (analogsum / 7.0);
   spectrumAvg = (analogsum / 7.0) / 4;
-  gainAGC = 270.0 / audioAvg;
+  gainAGC = 300.0 / audioAvg;
   if (gainAGC > GAINUPPERLIMIT) gainAGC = GAINUPPERLIMIT;
   if (gainAGC < GAINLOWERLIMIT) gainAGC = GAINLOWERLIMIT;
 }
@@ -77,12 +79,14 @@ void readAudio() {
 byte beatTriggered = 0;
 #define beatLevel 32.0
 #define beatDeadzone 32.0
-#define beatDelay 96
+#define beatDelay 0
 float lastBeatVal = 0;
 byte beatDetect() {
   static float beatAvg = 0;
   static unsigned long lastBeatMillis;
-  float specCombo = (spectrumDecay[0]+spectrumDecay[1]+spectrumDecay[2]) / 3.0;
+  uint8_t specCombo = spectrumByte[bassBand[0]];
+  //uint8_t specCombo = (spectrumByte[bassBand[0]] + spectrumByte[bassBand[1]]) / 2.0;
+  //float specCombo = (spectrumDecay[bassBand[0] + spectrumDecay[bassBand[1]]) / 2.0;
   beatAvg = (1.0 - AGCSMOOTH) * beatAvg + AGCSMOOTH * specCombo;
 
   if (lastBeatVal < beatAvg) lastBeatVal = beatAvg;
@@ -90,8 +94,10 @@ byte beatDetect() {
     beatTriggered = 1;
     lastBeatVal = specCombo;
     lastBeatMillis = currentMillis;
-    Serial.print("  bass hit ");
-    bassSwap?Serial.println("0|1"):Serial.println("3|4");
+      Serial.println("Bass Treble");
+      Serial.print(bassBand[0]);
+      Serial.print(" ");
+      Serial.println(trebBand);
     return 1;
   } else if ((lastBeatVal - specCombo) > beatDeadzone) {
     beatTriggered = 0;
@@ -102,15 +108,15 @@ byte beatDetect() {
 }
 
 byte trebTriggered = 0;
-#define trebLevel 28.0
-#define trebDeadzone 28.0
-#define trebDelay 32
+#define trebLevel 32.0
+#define trebDeadzone 32.0
+#define trebDelay 0
 float lastTrebVal = 0;
 byte trebDetect() {
   static float trebAvg = 0;
   static unsigned long lastTrebMillis;
-  //uint8_t specCombo = spectrumByte[6] / 1.0;
-  uint8_t specCombo = (spectrumByte[trebSwap?6:3]) / 1.0;
+  uint8_t specCombo = spectrumByte[trebBand] / 1.0;
+  //float specCombo = spectrumDecay[trebBand] / 1.0;
   trebAvg = (1.0 - AGCSMOOTH) * trebAvg + AGCSMOOTH * specCombo;
 
   if (lastTrebVal < trebAvg) lastTrebVal = trebAvg;
@@ -118,8 +124,9 @@ byte trebDetect() {
     trebTriggered = 1;
     lastTrebVal = specCombo;
     lastTrebMillis = currentMillis;
-    Serial.print("treb hit ");
-    trebSwap?Serial.println("6"):Serial.println("3");
+      Serial.print(bassBand[0]);
+      Serial.print(" ");
+      Serial.println(trebBand);
     return 1;
   } else if ((lastTrebVal - specCombo) > trebDeadzone) {
     trebTriggered = 0;
