@@ -80,7 +80,7 @@ void readAudio() {
 // Attempt at beat detection
 byte beatTriggered = 0;
 #define beatLevel 64.0
-#define beatDeadzone 32.0
+#define beatDeadzone 48.0
 #define beatDelay 0
 float lastBeatVal = 0;
 byte beatDetect() {
@@ -111,7 +111,7 @@ byte beatDetect() {
 
 byte trebTriggered = 0;
 #define trebLevel 64.0
-#define trebDeadzone 32.0
+#define trebDeadzone 48.0
 #define trebDelay 0
 float lastTrebVal = 0;
 byte trebDetect() {

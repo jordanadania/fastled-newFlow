@@ -79,7 +79,7 @@ uint8_t getMaxTreb(uint8_t in[]){
 }
 uint16_t idx;
 uint8_t bri[7], dfm[7], dfa[7],
-        smp[7][320],dif[7][320], 
+        smp[7][SAMPLES],dif[7][SAMPLES], 
         bass[7], treb[7];
 void saveBands(){
   for(byte b=0; b<7; ++b)
@@ -128,19 +128,23 @@ void newFlow(){
   uint16_t  k = edges[speed];
   uint16_t hk = k>>1;
   uint16_t ok = inv? (zero?k:hk): 0;
+  
   saveBands();
   bri = smp[trebBand][idx];
   idx = idx==SAMPLES-1? 0: idx+1;
+  
   rate = (getAverage32(smp[trebBand])>>5);
   if(rgbRate>rate+1) rgbRate-=rate;
+  
   if(rgbRate>3)      rgbRate-=rgbRate/4;
-  if(rgbRate>0)      rgbRate--;                                // Base Decay
-  inv? pull(zero? k: hk): push(zero? k: hk);                // webapp btn-Inversion decided push/pull
+  if(rgbRate>0)      rgbRate--;
+  
+  inv? pull(zero? k: hk): push(zero? k: hk);
+  
   if(beatDetect()){
-    freshWhites();                                        // Refresh Bass Hit Pixels that faded
-    leds[ok] = CRGB::White;                               // Paint the index
-    if(rate>0)
-      leds[ok==0? ok+1: ok-1] = CRGB::White;              // IF 12 of 32 brightness thresholds were
+    freshWhites();
+    leds[ok] = CRGB::White;
+    if(rate>0) leds[ok==0? ok+1: ok-1] = CRGB::White;              // IF 12 of 32 brightness thresholds were
   } else{ // beatDetect()
     if(trebDetect()){ rgbRate+=9; }                            // "trebDetect" increases rgbRate by the most
     dir? huey+=rgbRate: huey-=rgbRate;    // webapp btn-Hue Speed decided adjustment
