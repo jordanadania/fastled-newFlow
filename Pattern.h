@@ -47,13 +47,13 @@ uint8_t getAverage32(uint8_t in[]){
 }
 uint8_t getAverage255(uint8_t in[]){
   uint16_t out = 0;
-  for(int i=0; i<320; ++i)
+  for(int i=0; i<SAMPLES; ++i)
     out+=in[i];
   return out/320;
 }
 uint8_t getMax255(uint8_t in[]){
   uint8_t out = 0;
-  for(int i=0; i<320; ++i)
+  for(int i=0; i<SAMPLES; ++i)
     out=out<in[i]?in[i]:out;
   return out;
 }

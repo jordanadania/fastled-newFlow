@@ -21,6 +21,8 @@
 #define GAINUPPERLIMIT 20.0
 #define GAINLOWERLIMIT 0.1
 
+#define SAMPLES 420
+
 unsigned int spectrumValue[7];
 float spectrumDecay[7] = {0};
 float spectrumPeaks[7] = {0};
