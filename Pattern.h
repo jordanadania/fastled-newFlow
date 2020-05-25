@@ -111,7 +111,6 @@ void analyzeBands(){
   if(trebConf!=6)
     treb[6] *= 9>>3;
 
-  
   trebConf = trebBand = getMaxTreb(treb);
   bassConf = bassBand = getMaxBass(bass);
 }
@@ -131,11 +130,11 @@ void newFlow(){
   uint16_t ok = inv? (zero?k:hk): 0;
   saveBands();
   bri = smp[trebBand][idx];
-  idx = idx==319? 0: idx+1;
-  rate = (getAverage32(smp[trebBand])>>4)/3;
+  idx = idx==SAMPLES-1? 0: idx+1;
+  rate = (getAverage32(smp[trebBand])>>5);
   if(rgbRate>rate+1) rgbRate-=rate;
-  if(rgbRate>3) rgbRate-=rgbRate/4;                         // Weighted Decay
-  if(rgbRate>0) rgbRate--;                                  // Base Decay
+  if(rgbRate>3)      rgbRate-=rgbRate/4;
+  if(rgbRate>0)      rgbRate--;                                // Base Decay
   inv? pull(zero? k: hk): push(zero? k: hk);                // webapp btn-Inversion decided push/pull
   if(beatDetect()){
     freshWhites();                                        // Refresh Bass Hit Pixels that faded
