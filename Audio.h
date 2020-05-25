@@ -7,9 +7,9 @@
 #define qsubd(x, b)  ((x>b)?b:0)
 #define qsuba(x, b)  ((x>b)?x-b:0)
 
-#define AUDIO_PIN A0
-#define RESET_PIN  D3
-#define STROBE_PIN D4
+#define AUDIO_PIN  34 // A0 // 34
+#define RESET_PIN  33 // D4 // 33
+#define STROBE_PIN 26 // D3 // 26
 
 #define AUDIODELAY 0
 
@@ -77,14 +77,14 @@ void readAudio() {
 
 // Attempt at beat detection
 byte beatTriggered = 0;
-#define beatLevel 32.0
+#define beatLevel 64.0
 #define beatDeadzone 32.0
 #define beatDelay 0
 float lastBeatVal = 0;
 byte beatDetect() {
   static float beatAvg = 0;
   static unsigned long lastBeatMillis;
-  uint8_t specCombo = spectrumByte[bassBand[0]];
+  uint8_t specCombo = spectrumByte[bassBand];
   //uint8_t specCombo = (spectrumByte[bassBand[0]] + spectrumByte[bassBand[1]]) / 2.0;
   //float specCombo = (spectrumDecay[bassBand[0] + spectrumDecay[bassBand[1]]) / 2.0;
   beatAvg = (1.0 - AGCSMOOTH) * beatAvg + AGCSMOOTH * specCombo;
@@ -95,7 +95,7 @@ byte beatDetect() {
     lastBeatVal = specCombo;
     lastBeatMillis = currentMillis;
       Serial.println("Bass Treble");
-      Serial.print(bassBand[0]);
+      Serial.print(bassBand);
       Serial.print(" ");
       Serial.println(trebBand);
     return 1;
@@ -108,7 +108,7 @@ byte beatDetect() {
 }
 
 byte trebTriggered = 0;
-#define trebLevel 32.0
+#define trebLevel 64.0
 #define trebDeadzone 32.0
 #define trebDelay 0
 float lastTrebVal = 0;
@@ -124,7 +124,7 @@ byte trebDetect() {
     trebTriggered = 1;
     lastTrebVal = specCombo;
     lastTrebMillis = currentMillis;
-      Serial.print(bassBand[0]);
+      Serial.print(bassBand);
       Serial.print(" ");
       Serial.println(trebBand);
     return 1;
