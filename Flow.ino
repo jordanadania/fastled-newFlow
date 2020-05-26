@@ -4,18 +4,18 @@
 #define DATA_PIN      13 // 6 // 13
 #define COLOR_ORDER  GRB
 
-#define NUM_LED      144  
+#define NUM_LED      300  
 #define NUM_STRIPS     1 
 #define NUM_LEDS (NUM_LED * NUM_STRIPS)
 
-#define MILLI_AMPS   700
+#define MILLI_AMPS 32000
 #define BRIGHTNESS   255
 
 uint16_t edges[26];   // Array used to mirror and divide
 uint8_t  modus[26];   // Array that stores division remainders
 uint8_t  gHue,        // Global Hue Index
        newHue,
-      speed=1;
+      speed=4;
 
 bool
   pmd = true,
@@ -26,6 +26,7 @@ bool
   mor = false;
 
 CRGB leds[NUM_LEDS];  // Main Array
+CRGB ledz[NUM_LEDS];  // Main Array
 
 byte trebConf;
 byte bassConf;
@@ -41,7 +42,15 @@ void setup() {
   Serial.setDebugOutput(true);
   Serial.println();
   initializeAudio();
-  LEDS.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LED);
+  // Parallel output: 13, 12, 27, 33, 15, 32, 14, SCL
+  //FastLED.addLeds<WS2811, 14, RGB>(leds, 600, 150);
+  //FastLED.addLeds<LED_TYPE, 13, COLOR_ORDER>(leds, 0, NUM_LED);
+  //FastLED.addLeds<LED_TYPE, 12, COLOR_ORDER>(leds, NUM_LED, NUM_LED);
+  //FastLED.addLeds<LED_TYPE, 27, COLOR_ORDER>(leds, 2 * NUM_LED, NUM_LED);
+  FastLED.addLeds<LED_TYPE, 13, COLOR_ORDER>(leds, NUM_LED);
+  FastLED.addLeds<LED_TYPE, 12, COLOR_ORDER>(leds, NUM_LED);
+  FastLED.addLeds<LED_TYPE, 27, COLOR_ORDER>(leds, NUM_LED);
+  FastLED.addLeds<WS2811, 14, RGB>(leds, 150);
   LEDS.setDither(false);
   LEDS.setCorrection(TypicalLEDStrip);
   LEDS.setBrightness(BRIGHTNESS);
@@ -59,5 +68,7 @@ void loop() {
   EVERY_N_MILLISECONDS(40){ ++gHue; }
   readAudio();
   newFlow();
+  for(uint16_t i=0; i<NUM_LEDS; ++i)
+    leds[NUM_STRIPS>1?i<NUM_LED?NUM_LED-i-1:i<NUM_LED*2?i:NUM_LED*3-i+NUM_LED*2-1:i] = ledz[i];
   LEDS.show();
 }
