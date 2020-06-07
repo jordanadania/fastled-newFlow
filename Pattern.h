@@ -1,40 +1,40 @@
 void fadeWhites(uint8_t value){
   for(int i=1; i<NUM_LEDS-1; ++i)                                 
-    if((ledz[i].r == ledz[i].g && ledz[i].g == ledz[i].b)
-    &&(max(max(ledz[i].r, ledz[i].g), ledz[i].b) > 32
-    &&(ledz[i].r > max(max(ledz[i-1].r, ledz[i-1].g), ledz[i-1].b)
-    ||(ledz[i-1].r== ledz[i-1].g && ledz[i-1].g== ledz[i-1].b))
-    &&(ledz[i].r > max(max(ledz[i+1].r, ledz[i+1].g), ledz[i+1].b)
-    ||(ledz[i+1].r== ledz[i+1].g && ledz[i+1].g== ledz[i+1].b))
-    || ledz[i].r > 96))
-       ledz[i].fadeToBlackBy(value);
+    if((leds[i].r == leds[i].g && leds[i].g == leds[i].b)
+    &&(max(max(leds[i].r, leds[i].g), leds[i].b) > 32
+    &&(leds[i].r > max(max(leds[i-1].r, leds[i-1].g), leds[i-1].b)
+    ||(leds[i-1].r== leds[i-1].g && leds[i-1].g== leds[i-1].b))
+    &&(leds[i].r > max(max(leds[i+1].r, leds[i+1].g), leds[i+1].b)
+    ||(leds[i+1].r== leds[i+1].g && leds[i+1].g== leds[i+1].b))
+    || leds[i].r > 96))
+       leds[i].fadeToBlackBy(value);
 }
 void freshWhites(){
   for(int i=0; i<NUM_LEDS; ++i)
-    if(ledz[i].r==ledz[i].g && ledz[i].g==ledz[i].b)
-      ledz[i] = CRGB::White;
+    if(leds[i].r==leds[i].g && leds[i].g==leds[i].b)
+      leds[i] = CRGB::White;
 }
 void goGray(){
   for(uint16_t i=0; i<NUM_LEDS; ++i)
-    if(ledz[i]){
-      newHue = max(max(ledz[i].r, ledz[i].g), ledz[i].b);
-      ledz[i] = CRGB(newHue,newHue,newHue);
+    if(leds[i]){
+      newHue = max(max(leds[i].r, leds[i].g), leds[i].b);
+      leds[i] = CRGB(newHue,newHue,newHue);
     }
 }
 void push(uint16_t k){
     for(uint16_t i=k; i>0; --i)
-      ledz[i] = ledz[i-1];
+      leds[i] = leds[i-1];
 }
 void pull(uint16_t k){
     for(uint16_t i=0; i<k; ++i)
-      ledz[i] = ledz[i+1];
+      leds[i] = leds[i+1];
 }
 void mirror(uint16_t k){
     for(int i=0; i<k; ++i)
-      ledz[k-i]=ledz[i];
+      leds[k-i]=leds[i];
 }
 void copyIt(byte k){
-  memcpy(ledz+NUM_LEDS/k, ledz,
+  memcpy(leds+NUM_LEDS/k, leds,
     modus[k]<1?(NUM_LEDS*sizeof(CRGB)*(k-1)/k):
  (NUM_LEDS*sizeof(CRGB)*(k-1)/k)+sizeof(CRGB));
 }
@@ -110,11 +110,18 @@ void analyzeBands(){
   bassConf = bassBand = getMaxBass(bass);
 }
 
-void newFlow(){  
-    EVERY_N_SECONDS(2){ if(spectrumAvg>48) analyzeBands(); else bassConf=bassBand=0,trebConf=trebBand=6; }
+void newFlow(){
+  readAudio();
+    EVERY_N_SECONDS(2){
+      if(spectrumAvg>48)
+        analyzeBands();
+      else 
+        bassConf=bassBand=0,
+        trebConf=trebBand=6;
+    }
     static uint8_t rgbRate, huey;
     uint8_t bri, rate;
-    bool bb = true, bt = true;
+    bool bb = true, bt = bb;
     
     fadeWhites(16);
       bool zero = speed==0? true: false;
@@ -134,16 +141,16 @@ void newFlow(){
     
     inv? pull(zero? k: hk): push(zero? k: hk);
     
-    if(beatDetect()){
+    if(beatDetect()&&spectrumAvg>96){
       freshWhites();
-      ledz[ok] = CRGB::White;
-      if(rate>0) ledz[ok==0? ok+1: ok-1] = CRGB::White;              // IF 12 of 32 brightness thresholds were
+      leds[ok] = CRGB::White;
+      if(rate>0) leds[ok==0? ok+1: ok-1] = CRGB::White;              // IF 12 of 32 brightness thresholds were
     } else{ // beatDetect()
-      if(trebDetect()){ rgbRate+=9; }                            // "trebDetect" increases rgbRate by the most
+      if(trebDetect()&&spectrumAvg>64){ rgbRate+=16; }                            // "trebDetect" increases rgbRate by the most
       dir? huey+=rgbRate: huey-=rgbRate;    // webapp btn-Hue Speed decided adjustment
-      ledz[ok] = ColorFromPalette(RainbowColors_p, huey, bri, LINEARBLEND);   // webapp btn-Palette Mode
+      leds[ok] = ColorFromPalette(RainbowColors_p, huey, bri, LINEARBLEND);   // webapp btn-Palette Mode
     } // beatDetect()
-    if(bri==0) ledz[ok] = CRGB(0,1,0);                        // Never let a pixel be black
+    if(bri==0) leds[ok] = CRGB(0,1,0);                        // Never let a pixel be black
     if(!zero){ mirror(k); copyIt(speed*NUM_STRIPS); }                  // Mirror from Index // copy mirrored section speed*3-1 times
   //}
 }

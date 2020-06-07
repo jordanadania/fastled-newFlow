@@ -7,9 +7,15 @@
 #define qsubd(x, b)  ((x>b)?b:0)
 #define qsuba(x, b)  ((x>b)?x-b:0)
 
-#define AUDIO_PIN  34 // A0 // 34
-#define RESET_PIN  33 // D4 // 33
-#define STROBE_PIN 26 // D3 // 26
+#ifdef ESP8266
+  #define AUDIO_PIN  A0 // 34
+  #define RESET_PIN  D4 // 33
+  #define STROBE_PIN D3 // 26
+#else
+  #define AUDIO_PIN  32 // A0 // 34
+  #define RESET_PIN  34 // D4 // 33
+  #define STROBE_PIN 26 // D3 // 26
+#endif
 
 #define AUDIODELAY 0
 
@@ -44,7 +50,8 @@ void initializeAudio() {
 }
 
 void readAudio() {
-  static PROGMEM const byte spectrumFactors[7] = {6, 8, 8, 8, 7, 7, 10};
+  Serial.println("a0 b1 c2 d3");
+  //static PROGMEM const byte spectrumFactors[7] = {10, 6, 6, 6, 6, 6, 10};
   digitalWrite(RESET_PIN, HIGH);
   delayMicroseconds(5);
   digitalWrite(RESET_PIN, LOW);
@@ -62,7 +69,11 @@ void readAudio() {
     } else {
       spectrumValue[i] -= NOISEFLOOR;
     }
-    spectrumValue[i] = (spectrumValue[i] * pgm_read_byte_near(spectrumFactors + i)) / 10;
+    //spectrumValue[i] = (spectrumValue[i] * pgm_read_byte_near(spectrumFactors + i)) / 10;
+    if(i<4){
+      Serial.print(spectrumValue[i]);
+      Serial.print(" ");
+    }
     analogsum += spectrumValue[i];
     spectrumValue[i] *= gainAGC;
     spectrumDecay[i] = (1.0 - SPECTRUMSMOOTH) * spectrumDecay[i] + SPECTRUMSMOOTH * spectrumValue[i];
@@ -70,6 +81,7 @@ void readAudio() {
     spectrumPeaks[i] = spectrumPeaks[i] * (1.0 - PEAKDECAY);
     spectrumByte[i] = spectrumValue[i]>>2>255?255:spectrumValue[i]>>2;
   }
+  Serial.println();
   audioAvg = (1.0 - AGCSMOOTH) * audioAvg + AGCSMOOTH * (analogsum / 7.0);
   spectrumAvg = (analogsum / 7.0) / 4;
   gainAGC = 300.0 / audioAvg;
@@ -96,10 +108,10 @@ byte beatDetect() {
     beatTriggered = 1;
     lastBeatVal = specCombo;
     lastBeatMillis = currentMillis;
-      Serial.println("Bass Treble");
+      /*Serial.println("Bass Treble");
       Serial.print(bassBand);
       Serial.print(" ");
-      Serial.println(trebBand);
+      Serial.println(trebBand);*/
     return 1;
   } else if ((lastBeatVal - specCombo) > beatDeadzone) {
     beatTriggered = 0;
@@ -126,9 +138,9 @@ byte trebDetect() {
     trebTriggered = 1;
     lastTrebVal = specCombo;
     lastTrebMillis = currentMillis;
-      Serial.print(bassBand);
-      Serial.print(" ");
-      Serial.println(trebBand);
+      //Serial.print(bassBand);
+      //Serial.print(" ");
+      //Serial.println(trebBand);
     return 1;
   } else if ((lastTrebVal - specCombo) > trebDeadzone) {
     trebTriggered = 0;
