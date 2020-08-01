@@ -92,39 +92,45 @@ void saveBands(uint16_t in){
     dif[b][in] = abs(smp[b][in+1]-smp[b][in]);
 }
 void analyzeBands(){
+  
   // Get Average
   for(byte b=0; b<NUM_BANDS; ++b)
     bri[b] = getAverage255(smp[b]);
+    
   // Get Average Difference
   for(byte b=0; b<NUM_BANDS; ++b)
     dfa[b] = getAverage255(dif[b]);
+    
   // Get Biggest Difference
   for(byte b=0; b<NUM_BANDS; ++b)
     dfm[b] = getMax255(dif[b]);
+    
   // Bass Analysis
   for(byte b=0; b<7; ++b){
-    bass[b] = bri[b]>>1>dfm[b]? 0: dfm[b]-bri[b]>>1;
-    if(b<3&&bassBand!=b)
-      bass[b] *= 9>>3;
+    bass[b] = bri[b]>dfm[b]? 0: dfm[b]-bri[b];
+    //if(b<3&&bassBand!=b)
+    //  bass[b] *= 9>>3;
   }
-  bass[bassBand] *= 5>>2;
+  bass[bassBand] *= 9>>3;
+  
   // Treb Analysis
   for(byte b=0; b<7; ++b){
-    treb[b] = (bri[b]+dfm[b]>>1)>>1;
-    if(b>2&&trebBand!=b)
-      treb[b] *= 9>>3;
+    treb[b] = dfm[b];
+   // if(b>2)
+   //  treb[b] *= 9>>3;
   }
-  treb[trebBand] *= 5>>2;
-
+  // Band Assignment
   trebBand = getMaxTreb(treb);
   bassBand = getMaxBass(bass);
+  
 }
 void newFlow(){ audio = true;
   static uint16_t idx;
   uint8_t bri, rate;
   bool bb = true, bt = true;
   EVERY_N_SECONDS(8){ if(mor) morph(); }
-  EVERY_N_SECONDS(2){ if(spectrumAvg>48) analyzeBands(); else bassBand=0,trebBand=6; }
+  //EVERY_N_SECONDS(2){ if(spectrumAvg>48) analyzeBands(); else bassBand=0,trebBand=6; }
+  EVERY_N_SECONDS(2){ analyzeBands(); }
     fadeWhites(16);
    // if(tfd) fadeColors(32);
     if(mor) speed = morphs;
@@ -135,8 +141,9 @@ void newFlow(){ audio = true;
   saveBands(idx);
    bri = smp[trebBand][idx];
    idx = idx==SAMPLES-1? 0: idx+1;
-  rate = getAverage32(smp[trebBand])>>5;
-  if(   rate>1)        --rate;
+  //rate = getAverage32(smp[trebBand])>>4;
+  //if(   rate>1)        --rate;
+  //              rgbRate+=rate;
   if(rgbRate>3) rgbRate-=rgbRate>>2;
   if(rgbRate>0)        --rgbRate;
   if(!bmd&&!sv2){
@@ -153,7 +160,7 @@ void newFlow(){ audio = true;
       }
     } else{
       freshWhites();
-      if(!hup){ rgbRate+=18; 
+      if(!hup){ rgbRate+=16; 
         hmd?huey=gHue:(dir?huey+=rgbRate:huey-=rgbRate);
       }
       ledz[ok] = CRGB::White;
@@ -161,7 +168,7 @@ void newFlow(){ audio = true;
         ledz[ok==0? ok+1: ok-1] = CRGB::White;
     }
   } else{ // beatDetect()
-    if(trebDetect()&&hup){ rgbRate+=9; }
+    if(trebDetect()&&hup){ rgbRate+=8; }
     if(hup)
       hmd? huey=gHue: dir? huey+=rgbRate: huey-=rgbRate;
     ledz[ok] = ColorFromPalette(pmd? palettes[currPalIdx]:
