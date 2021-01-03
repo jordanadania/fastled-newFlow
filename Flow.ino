@@ -2,34 +2,27 @@
   #include <ESP8266WiFi.h>
   #include <ESP8266mDNS.h>
 #else
-//  #define FASTLED_ESP32_I2S
   #include <ESPmDNS.h>
   #include <WiFi.h>
 #endif
 
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
+
 #define FASTLED_INTERRUPT_RETRY_COUNT 0
 #include "FastLED.h"
 #define FASTLED_SHOW_CORE 1
 
-#ifdef ESP8266
-  #define DATA_PIN 8 
-#else
-  #define DATA_PIN 4
-#endif
-#define LED_TYPE  WS2812B
+#define DATA_PIN       4
+#define LED_TYPE WS2812B
 #define COLOR_ORDER  GRB
-#define NUM_LED      300  
-#define NUM_STRIPS     3 
-#define NUM_LEDS (NUM_LED * NUM_STRIPS)
-
-#define MILLI_AMPS 32000
+#define NUM_LED      300
+#define MILLI_AMPS  1200
 #define BRIGHTNESS   255
 
 // Wifi Settings for Over The Air Updates
-const char* ssid = "This";
-const char* password = "youngearth850";
+const char* ssid = "YOURssidHERE";
+const char* password = "YOURpassHERE";
 
 uint16_t edges[26];   // Array used to mirror and divide
 uint8_t  modus[26];   // Array that stores division remainders
@@ -46,7 +39,6 @@ bool
   mor = false;
 
 CRGB leds[NUM_LEDS];  // Main Array
-CRGB grbleds[NUM_LEDS];
 
 byte trebConf;
 byte bassConf;
@@ -62,22 +54,12 @@ void setup() {
   Serial.setDebugOutput(true);
   Serial.println();
   initializeAudio();
-  // Parallel output: 13, 12, 27, 33, 15, 32, 14, SCL
-
   #ifdef ESP8266
-    // Uncomment if you are NOT using FastLED's Parallel Output
-    // FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);       // for WS2812 (Neopixel)
+    FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);       // for WS2812 (Neopixel)
     // FastLED.addLeds<LED_TYPE,DATA_PIN,CLK_PIN,COLOR_ORDER>(leds, NUM_LEDS); // for APA102 (Dotstar)
-    FastLED.addLeds<LED_TYPE, 4, COLOR_ORDER>(leds, 600, 150);
-    FastLED.addLeds<WS2811_PORTA, NUM_STRIPS>(leds, NUM_LED);
   #else
-    // Uncomment if you are NOT using FastLED's Parallel Output
-    // FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);       // for WS2812 (Neopixel)
+    FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);       // for WS2812 (Neopixel)
     // FastLED.addLeds<LED_TYPE,DATA_PIN,CLK_PIN,COLOR_ORDER>(leds, NUM_LEDS); // for APA102 (Dotstar)
-    FastLED.addLeds<WS2811, 33, RGB>(leds, NUM_LED/2);
-    FastLED.addLeds<WS2812, 13, GRB>(grbleds, NUM_LED);
-    FastLED.addLeds<WS2812, 12, GRB>(grbleds, NUM_LED);
-    FastLED.addLeds<WS2812, 27, GRB>(grbleds, NUM_LED);
   #endif
   LEDS.setDither(false);
   LEDS.setCorrection(TypicalLEDStrip);
@@ -96,15 +78,5 @@ void loop() {
   ArduinoOTA.handle();
   currentMillis = millis();
   newFlow();
-  memcpy(grbleds, leds, sizeof(leds));
-  swapColors();
   LEDS.show();
-  //LEDS.delay(10);
-}
-void swapColors(){ CRGB temp;
-  for(uint16_t i=0; i<NUM_LEDS; ++i){
-    temp = grbleds[i];
-    grbleds[i].r = temp.g;
-    grbleds[i].g = temp.r;
-  }
 }
