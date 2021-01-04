@@ -6,13 +6,17 @@ Audio reactive FastLED pattern using the MSGEQ7.
 Hardware
 --------
 
-MSGEQ7  breakout board (7-band graphic equalizer for audio):<br>You only need the mono version for this project, buy stereo if you wish.<br>
-[![MSGEQ7  breakout board](https://i.ebayimg.com/images/g/XMoAAOSw0e9UwT9y/s-l300.jpg)](https://www.ebay.com/itm/MSGEQ7-breakout-board-7-band-graphic-equalizer-for-audio-for-Arduino-RPi-PIC-/301210655107)
+MSGEQ7 breakout board (7-band graphic equalizer for audio)<br>This firmware uses the MONO version, not STEREO<br><br>
+
+|<a href="https://www.ebay.com/itm/MSGEQ7-breakout-board-7-band-graphic-equalizer-for-audio-for-Arduino-or-RPi/353131861821?hash=item52384c973d:g:L3sAAOSwt4xfOK08">EBay</a>|
+<a href="https://smile.amazon.com/MSGEQ7-Spectrum-Analyzer-Breakout-Stereo/dp/B08GY46BY8/ref=sr_1_2?dchild=1&keywords=MSGEQ7&qid=1609786663&sr=8-2">Amazon</a>||-----|-----||<a href="https://www.ebay.com/itm/MSGEQ7-breakout-board-7-band-graphic-equalizer-for-audio-for-Arduino-or-RPi/353131861821?hash=item52384c973d:g:L3sAAOSwt4xfOK08">
+<img src="https://i.ebayimg.com/images/g/XMoAAOSw0e9UwT9y/s-l300.jpg"></a>|
 
 An ESP8266 development board:<br>(other boards may work, this is just the chip I prefer)<br><br>
-<a href="https://www.amazon.com/HiLetgo-Internet-Development-Wireless-Micropython/dp/B081CSJV2V/ref=sr_1_1_sspa?dchild=1&keywords=nodemcu+12-e&qid=1609781366&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEzTFI4VlIyTDNPVlY5JmVuY3J5cHRlZElkPUEwODI4NDQ3MjVEMlY0NUtFN0lSNyZlbmNyeXB0ZWRBZElkPUEwNTYyNjkzMU5WTEI1SjdJUTlDJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ==">
- 
-|NodeMCU 12-E</a>|<a href="https://www.amazon.com/AITRIP-NodeMcu-Internet-Development-Compatible/dp/B08C7FYM5T/ref=sr_1_2?dchild=1&keywords=d1+mini&qid=1609781610&sr=8-2">D1 Mini 12-F|
+
+|<a href="https://www.amazon.com/HiLetgo-Internet-Development-Wireless-Micropython/dp/B081CSJV2V/ref=sr_1_1_sspa?dchild=1&keywords=nodemcu+12-e&qid=1609781366&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEzTFI4VlIyTDNPVlY5JmVuY3J5cHRlZElkPUEwODI4NDQ3MjVEMlY0NUtFN0lSNyZlbmNyeXB0ZWRBZElkPUEwNTYyNjkzMU5WTEI1SjdJUTlDJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ==">
+NodeMCU 12-E</a>
+|<a href="https://www.amazon.com/AITRIP-NodeMcu-Internet-Development-Compatible/dp/B08C7FYM5T/ref=sr_1_2?dchild=1&keywords=d1+mini&qid=1609781610&sr=8-2">D1 Mini 12-F</a>|
 |------------|------------|
 |<a href="https://www.amazon.com/HiLetgo-Internet-Development-Wireless-Micropython/dp/B081CSJV2V/ref=sr_1_1_sspa?dchild=1&keywords=nodemcu+12-e&qid=1609781366&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEzTFI4VlIyTDNPVlY5JmVuY3J5cHRlZElkPUEwODI4NDQ3MjVEMlY0NUtFN0lSNyZlbmNyeXB0ZWRBZElkPUEwNTYyNjkzMU5WTEI1SjdJUTlDJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ=="><img src="https://images-na.ssl-images-amazon.com/images/I/61GwRCoPxlL._AC_SL1035_.jpg" width="320"></a>|<a href="https://www.amazon.com/AITRIP-NodeMcu-Internet-Development-Compatible/dp/B08C7FYM5T/ref=sr_1_2?dchild=1&keywords=d1+mini&qid=1609781610&sr=8-2"><img src="https://images-na.ssl-images-amazon.com/images/I/61KNTnEWAXL._AC_SL1000_.jpg" width="320"></a>|
 
