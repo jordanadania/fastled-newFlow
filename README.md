@@ -16,8 +16,7 @@ An ESP8266 development board:
 
 [![Adafruit HUZZAH ESP8266 Breakout](https://cdn-shop.adafruit.com/310x233/2471-10.jpg)](https://www.adafruit.com/products/2471)
 
-<img src="https://images-na.ssl-images-amazon.com/images/I/61GwRCoPxlL._AC_SL1035_.jpg" width="100" height="100">
-Testing
+<a href="https://www.amazon.com/HiLetgo-Internet-Development-Wireless-Micropython/dp/B081CSJV2V/ref=sr_1_1_sspa?dchild=1&keywords=nodemcu+12-e&qid=1609781366&sr=8-1-spons&psc=1&spLa=ZW5jcnlwdGVkUXVhbGlmaWVyPUEzTFI4VlIyTDNPVlY5JmVuY3J5cHRlZElkPUEwODI4NDQ3MjVEMlY0NUtFN0lSNyZlbmNyeXB0ZWRBZElkPUEwNTYyNjkzMU5WTEI1SjdJUTlDJndpZGdldE5hbWU9c3BfYXRmJmFjdGlvbj1jbGlja1JlZGlyZWN0JmRvTm90TG9nQ2xpY2s9dHJ1ZQ==">NodeMCU 12-E<br><img src="https://images-na.ssl-images-amazon.com/images/I/61GwRCoPxlL._AC_SL1035_.jpg" width="320"></a>
 
 [![D1 Mini 12-F](https://images-na.ssl-images-amazon.com/images/I/61KNTnEWAXL._AC_SL1000_.jpg)](https://www.amazon.com/AITRIP-NodeMcu-Internet-Development-Compatible/dp/B08C7FYM5T/ref=sr_1_2?dchild=1&keywords=d1+mini&qid=1609781610&sr=8-2)
 
