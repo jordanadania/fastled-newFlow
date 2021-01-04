@@ -2,7 +2,7 @@
 Audio reactive FastLED pattern using the MSGEQ7.
 
 ## Hardware
-<b>MSGEQ7</b> breakout board(for audio)<br>This firmware uses the MONO version, not STEREO<br>(Notice the single OUT pin pictured below)
+<b>MSGEQ7</b> breakout board (for audio)<br>This firmware uses the MONO version, not STEREO<br>(Notice the single OUT pin pictured below)
 
 |<a href="https://www.ebay.com/itm/MSGEQ7-breakout-board-7-band-graphic-equalizer-for-audio-for-Arduino-or-RPi/353131861821?hash=item52384c973d:g:L3sAAOSwt4xfOK08">EBay</a>|<a href="https://smile.amazon.com/MSGEQ7-Spectrum-Analyzer-Breakout-Stereo/dp/B08GY46BY8/ref=sr_1_2?dchild=1&keywords=MSGEQ7&qid=1609786663&sr=8-2">Amazon</a>|
 |-|-|
