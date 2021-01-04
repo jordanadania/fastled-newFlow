@@ -21,7 +21,6 @@ Audio reactive FastLED pattern using the MSGEQ7.
 |<a href="https://smile.amazon.com/ALITOVE-Diffused-Digital-Addressable-Waterproof/dp/B06XN66ZY6/ref=sr_1_18?dchild=1&keywords=ws2811&qid=1609792744&sr=8-18"><img src="https://images-na.ssl-images-amazon.com/images/I/61X6jpId2nL._AC_SL1000_.jpg" width="320"></a>|<a href="https://www.amazon.com/ALITOVE-Addressable-Programmable-Waterproof-Raspberry/dp/B07FVPN3PH/ref=sr_1_5?dchild=1&keywords=ws2812b+30%2Fm&qid=1609793360&s=hi&sr=1-5"><img src="https://images-na.ssl-images-amazon.com/images/I/61jf8kqPMLL._AC_SL1000_.jpg" width="320"></a>|
 
 ## Features
---------
 * Automatic Channel Analysis (Finds Bass and Treble Channels in realtime)
 * Bass/Beat Hits will spawn a white pixel that fades over time
 * Bass/Beat Hits will 'refresh' all white pixels to full brightness
@@ -29,7 +28,6 @@ Audio reactive FastLED pattern using the MSGEQ7.
 * Spawns are marquee'd cross every frame
 
 ## Installing
------------
 ### Step 1 - Get Arduino IDE
 <a href="https://www.arduino.cc/en/main/software">Download and Install - Arduino IDE</a>
 ### Step 2 - Tell Arduino About 8266
@@ -43,10 +41,12 @@ Audio reactive FastLED pattern using the MSGEQ7.
 - Click 'Install'
 - Click 'Close'
 - Click 'Tools' > 'Board:' > 'ESP8266 Boards (#.#.#)'
-- - Find your specific board (NodeMCU 1.0 (ESP-12E Module) OR LOLIN WEMOS D1 R2 & mini)
+- Find your specific board
+- - NodeMCU 1.0 (ESP-12E Module)
+- - LOLIN WEMOS D1 R2 & mini
 ### Step 3 - Get FastLED
 - Click 'Sketch' > 'Include Library' > 'Manage libraries...'
 - - Ctrl+Shift+I (Library Manager)
 - Search for "FastLED"
-- - Install "FastLED by **Daniel Garcia**"
+- Install "FastLED by **Daniel Garcia**"
 - Click 'Close'
