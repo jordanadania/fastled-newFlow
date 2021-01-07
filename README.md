@@ -47,5 +47,5 @@ Audio reactive FastLED pattern using the MSGEQ7.
 ### Step 4 - Select Your Board
 - Click 'Tools' > 'Board:' > 'ESP8266 Boards (#.#.#)'
 - Find your specific board
-- - NodeMCU 1.0 (ESP-12E Module)
-- - LOLIN WEMOS D1 R2 & mini
+- - NodeMCU **1.0** (ESP-12**E** Module)
+- - LOLIN WEMOS **D1 R2 & mini**
