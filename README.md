@@ -29,24 +29,23 @@ Audio reactive FastLED pattern using the MSGEQ7.
 
 ## Installing
 ### Step 1 - Get Arduino IDE
-<a href="https://www.arduino.cc/en/main/software">Download and Install - Arduino IDE</a>
-### Step 2 - Tell Arduino About 8266
+- <a href="https://www.arduino.cc/en/main/software">Download and Install - Arduino IDE</a>
+### Step 2 - Tell Arduino About FastLED
+- Click 'Sketch' > 'Include Library' > 'Manage libraries...'
+- Search for "FastLED"
+- Install "**FastLED** by **Daniel Garcia**"
+- Click 'Close'
+### Step 3 - Tell Arduino About ESP8266
 - Click 'File' > 'Preferences'
-- - Ctrl+comma (Preferences)
 - Paste the following url into the Additional Boards Manager field near the bottom of the dialog box:
 - - http://arduino.esp8266.com/stable/package_esp8266com_index.json
 - Click 'OK'
 - Click 'Tools' > 'Board:' > 'Boards Manager...'
 - Search for "8266"
-- Click 'Install'
+- Install "**esp8266** by **ESP8266 Community**"
 - Click 'Close'
+### Step 4 - Select Your Board
 - Click 'Tools' > 'Board:' > 'ESP8266 Boards (#.#.#)'
 - Find your specific board
 - - NodeMCU 1.0 (ESP-12E Module)
 - - LOLIN WEMOS D1 R2 & mini
-### Step 3 - Get FastLED
-- Click 'Sketch' > 'Include Library' > 'Manage libraries...'
-- - Ctrl+Shift+I (Library Manager)
-- Search for "FastLED"
-- Install "FastLED by **Daniel Garcia**"
-- Click 'Close'
