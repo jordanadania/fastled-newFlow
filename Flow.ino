@@ -16,7 +16,7 @@
 #define DATA_PIN       4
 #define LED_TYPE WS2812B
 #define COLOR_ORDER  GRB
-#define NUM_LED      300
+#define NUM_LEDS     300
 #define MILLI_AMPS  1200
 #define BRIGHTNESS   255
 
