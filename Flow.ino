@@ -68,9 +68,9 @@ void setup() {
   memset(leds, 0, sizeof(leds));
   LEDS.show();
   for(byte b=0; b<=25; ++b)
-    edges[b] = b==0? NUM_LEDS-1: NUM_LEDS/(b*NUM_STRIPS)-1;
+    edges[b] = b==0? NUM_LEDS-1: NUM_LEDS/b-1;
   for(byte b=0; b<=25; ++b)
-    modus[b] = b==0? 0: NUM_LEDS%(b*NUM_STRIPS);
+    modus[b] = b==0? 0: NUM_LEDS%b;
   #include "OtA.h"
 }
 
