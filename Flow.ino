@@ -1,17 +1,28 @@
-#ifdef ESP8266
-  #include <ESP8266WiFi.h>
-  #include <ESP8266mDNS.h>
-#else
-  #include <ESPmDNS.h>
-  #include <WiFi.h>
+// Uncomment to include Over the Air updates
+//#define ENABLE_OTA
+
+#ifdef ENABLE_OTA
+  #ifdef ESP8266
+    #include <ESP8266WiFi.h>
+    #include <ESP8266mDNS.h>
+  #else
+    #include <ESPmDNS.h>
+    #include <WiFi.h>
+  #endif
+
+  #include <WiFiUdp.h>
+  #include <ArduinoOTA.h>
+
+  // Wifi Settings for Over The Air Updates
+  const char* ssid = "YOURssidHERE";
+  const char* password = "YOURpassHERE";
 #endif
 
-#include <WiFiUdp.h>
-#include <ArduinoOTA.h>
-
-#define FASTLED_INTERRUPT_RETRY_COUNT 0
+#ifdef ENABLE_OTA
+  #define FASTLED_INTERRUPT_RETRY_COUNT 0
+#endif
 #include "FastLED.h"
-#define FASTLED_SHOW_CORE 1
+//#define FASTLED_SHOW_CORE 1 // not used (yet)
 
 #define DATA_PIN       4
 #define LED_TYPE WS2812B
@@ -20,9 +31,6 @@
 #define MILLI_AMPS  1200
 #define BRIGHTNESS   255
 
-// Wifi Settings for Over The Air Updates
-const char* ssid = "YOURssidHERE";
-const char* password = "YOURpassHERE";
 
 uint16_t edges[26];   // Array used to mirror and divide
 uint8_t  modus[26];   // Array that stores division remainders
@@ -71,12 +79,19 @@ void setup() {
     edges[b] = b==0? NUM_LEDS-1: NUM_LEDS/b-1;
   for(byte b=0; b<=25; ++b)
     modus[b] = b==0? 0: NUM_LEDS%b;
-  #include "OtA.h"
+  #ifdef ENABLE_OTA
+    #include "OtA.h"
+  #endif
 }
 
 void loop() {
-  ArduinoOTA.handle();
+  #ifdef ENABLE_OTA
+    ArduinoOTA.handle();
+  #endif
   currentMillis = millis();
   newFlow();
   LEDS.show();
+  #ifdef ENABLE_OTA
+    yield();
+  #endif
 }
