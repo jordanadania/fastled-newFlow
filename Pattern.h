@@ -130,7 +130,7 @@ void analyzeBands(){
     bb = true;
   }
 }
-void newFlow(){ audio = true;
+void newFlow(){
   static uint16_t idx;
   uint8_t bri, rate;
   EVERY_N_SECONDS(2){ if(spectrumAvg>32) analyzeBands(); else bassBand=0,trebBand=6; }
