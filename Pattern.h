@@ -40,12 +40,6 @@ void copyIt(byte k){
       NUM_LEDS/k*sizeof(CRGB)+sizeof(CRGB));
 }
 
-uint8_t getAverage32(uint8_t in[]){
-  uint16_t out = 0;
-  for(int i=0; i<32; ++i)
-    out+=in[i];
-  return out>>5;
-}
 uint8_t getAverage255(uint8_t in[]){
   uint16_t out = 0;
   for(int i=0; i<SAMPLES; ++i)
@@ -123,12 +117,13 @@ void analyzeBands(){
   newTreb = getMaxTreb(treb);
   newBass = getMaxBass(bass);
 
-  // 2 Strikes Against The Band
+  // 2 Strikes Against The Treb Band
  /* if(bt&&(newTreb!=trebBand)) bt = false;
   else if(!bt&&newTreb!=trebBand){
     trebBand = newTreb;
     bt = true;
   }*/
+  // 2 Strikes Against The Bass Band
   if(bb&&(newBass!=bassBand)) bb = false;
   else if(!bb&&newBass!=bassBand){
     bassBand = newBass;
