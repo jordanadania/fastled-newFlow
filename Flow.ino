@@ -28,7 +28,7 @@
 #define LED_TYPE WS2812B
 #define COLOR_ORDER  GRB
 #define NUM_LEDS     300
-#define MILLI_AMPS  1200
+#define MILLI_AMPS  1200    // change this to fit your setup
 #define BRIGHTNESS   255
 
 
