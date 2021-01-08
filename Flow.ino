@@ -38,14 +38,6 @@ uint8_t  gHue,        // Global Hue Index
        newHue,
       speed=2;
 
-bool
-  pmd = true,
-  dir = true,
-  inv = false,
-  bmd = true,
-  fmd = true,
-  mor = false;
-
 CRGB leds[NUM_LEDS];  // Main Array
 
 byte trebConf;
