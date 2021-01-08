@@ -104,25 +104,26 @@ void analyzeBands(){
   // Treb Analysis
   for(byte b=0; b<NUM_BANDS; ++b)
     treb[b] = dfa[b]>>2+bri[b]>>3+dfm[b]>>1;
-    
+  
   // Weighted Current Band
   //bass[bassBand] *= 9>>3;
   //treb[trebBand] *= 9>>3;
   
-  // Weighted Band
+  // Weighted Default Band
   bass[0] *= 9>>3;
   treb[6] *= 9>>3;
   
   // Band Assignment
   newTreb = getMaxTreb(treb);
   newBass = getMaxBass(bass);
-
+  
   // 2 Strikes Against The Treb Band
  /* if(bt&&(newTreb!=trebBand)) bt = false;
   else if(!bt&&newTreb!=trebBand){
     trebBand = newTreb;
     bt = true;
   }*/
+  
   // 2 Strikes Against The Bass Band
   if(bb&&(newBass!=bassBand)) bb = false;
   else if(!bb&&newBass!=bassBand){
@@ -132,7 +133,8 @@ void analyzeBands(){
 }
 void newFlow(){
   static uint16_t idx;
-  uint8_t bri, rate;
+  static uint8_t rgbRate;
+  uint8_t bri;
   EVERY_N_SECONDS(2){ if(spectrumAvg>32) analyzeBands(); else bassBand=0,trebBand=6; }
   fadeWhites(16);
     bool zero = speed==0? true: false;
@@ -144,35 +146,17 @@ void newFlow(){
   idx = idx==SAMPLES-1? 0: idx+1;
   if(rgbRate>3) rgbRate-=rgbRate>>2;
   if(rgbRate>0)        --rgbRate;
-  if(!bmd&&!sv2){
-    memcpy(leds, last, NUM_LEDS*3);
-    sv2 = !sv2;
-  }
-  inv? pull(zero? k: hk): push(zero? k: hk);
+  push(zero? k: hk);
   if(beatDetect()){
-    if(!bmd){
-      if(sv2){
-        memcpy(last, leds, NUM_LEDS*sizeof(CRGB));
-        fmd?goGray():fill_solid(leds,NUM_LEDS,CRGB::White);
-        sv2 = !sv2;
-      }
-    } else{
-      freshWhites();
-      if(!hup){ rgbRate+=16;
-        hmd?huey=gHue:(dir?huey+=rgbRate:huey-=rgbRate);
-      }
-      leds[ok] = CRGB::White;
-      if(rate>0)
-        leds[ok==0? ok+1: ok-1] = CRGB::White;
-    }
+    freshWhites();
+    rgbRate+=16;
+    huey+=rgbRate;
+    leds[ok] = CRGB::White;
   } else{ // beatDetect()
-    if(trebDetect()&&hup){ rgbRate+=8; }
-    if(hup)
-      hmd? huey=gHue: dir? huey+=rgbRate: huey-=rgbRate;
-    leds[ok] = ColorFromPalette(pmd? palettes[currPalIdx]:
-                gCurrentPalette, huey, bri, LINEARBLEND);
+    if(trebDetect()){ rgbRate+=8; }
+    huey+=rgbRate;
+    leds[ok] = ColorFromPalette(RainbowColors_p, huey, bri, LINEARBLEND);
   } // beatDetect()
   if(bri==0) leds[ok] = CRGB(0,1,0);
   if(!zero){ mirror(k); copyIt(speed*NUM_STRIPS); }
-  //rgbRate-=rate;
 }
