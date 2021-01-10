@@ -133,14 +133,14 @@ void analyzeBands(){
 }
 void newFlow(){
   static uint16_t idx;
-  static uint8_t rgbRate;
+  static uint8_t rgbRate, huey;
   uint8_t bri;
   EVERY_N_SECONDS(2){ if(spectrumAvg>32) analyzeBands(); else bassBand=0,trebBand=6; }
   fadeWhites(16);
     bool zero = speed==0? true: false;
   uint16_t  k = edges[speed];
   uint16_t hk = k>>1;
-  uint16_t ok = inv? (zero?k:hk): 0;
+  uint16_t ok = 0;
   saveBands(idx);
   bri = smp[trebBand][idx];
   idx = idx==SAMPLES-1? 0: idx+1;
@@ -158,5 +158,5 @@ void newFlow(){
     leds[ok] = ColorFromPalette(RainbowColors_p, huey, bri, LINEARBLEND);
   } // beatDetect()
   if(bri==0) leds[ok] = CRGB(0,1,0);
-  if(!zero){ mirror(k); copyIt(speed*NUM_STRIPS); }
+  if(!zero){ mirror(k); copyIt(speed); }
 }
