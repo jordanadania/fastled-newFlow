@@ -80,7 +80,7 @@ void loop() {
   #ifdef ENABLE_OTA
     ArduinoOTA.handle();
   #endif
-  currentMillis = millis();
+  readAudio();
   newFlow();
   LEDS.show();
   #ifdef ENABLE_OTA
