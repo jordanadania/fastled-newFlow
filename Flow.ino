@@ -24,7 +24,7 @@
 #include "FastLED.h"
 //#define FASTLED_SHOW_CORE 1 // not used (yet)
 
-#define DATA_PIN       4  // some boards use D4 instead
+#define DATA_PIN      D6  // some boards use D4 instead
 #define LED_TYPE WS2812B
 #define COLOR_ORDER  GRB
 #define NUM_LEDS     300
