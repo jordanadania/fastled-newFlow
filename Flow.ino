@@ -1,10 +1,10 @@
 #define FASTLED_INTERNAL
 #include <FastLED.h>
 
-#define DATA_PIN      D4
+#define DATA_PIN      D5
 #define LED_TYPE WS2812B
 #define COLOR_ORDER  GRB
-#define NUM_LEDS     100
+#define NUM_LEDS      50
 #define MILLI_AMPS  1200
 #define BRIGHTNESS   255
 
@@ -26,7 +26,7 @@ byte trebConf,
 #include "Pattern.h"
 
 void setup() {
-  Serial.begin(115200);
+  //Serial.begin(115200);
   delay(100);
   Serial.setDebugOutput(true);
   Serial.println();
