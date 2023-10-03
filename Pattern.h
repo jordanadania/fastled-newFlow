@@ -142,18 +142,23 @@ void newFlow(){
   uint16_t hk = k>>1;
   uint16_t ok = 0;
   saveBands(idx);
-  bri = smp[trebBand][idx];
+  //bri = smp[trebBand][idx];
+  bri = spectrumByte[6];
+  bri = bri<32?0:bri;
+  //Serial.println(rgbRate);
   idx = idx==SAMPLES-1? 0: idx+1;
   if(rgbRate>3) rgbRate-=rgbRate>>2;
   if(rgbRate>0)        --rgbRate;
   push(zero? k: hk);
+  //Serial.println(bri);
   if(beatDetect()){
     freshWhites();
     rgbRate+=16;
     huey+=rgbRate;
     leds[ok] = CRGB::White;
   } else{ // beatDetect()
-    if(trebDetect()){ rgbRate+=8; }
+    if(trebDetect())
+      rgbRate+=8;
     huey+=rgbRate;
     leds[ok] = ColorFromPalette(RainbowColors_p, huey, bri, LINEARBLEND);
   } // beatDetect()
