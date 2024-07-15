@@ -6,7 +6,7 @@ Audio reactive FastLED pattern using the MSGEQ7.
 
 |<a href="https://www.ebay.com/itm/MSGEQ7-breakout-board-7-band-graphic-equalizer-for-audio-for-Arduino-or-RPi/353131861821?hash=item52384c973d:g:L3sAAOSwt4xfOK08">EBay</a>|<a href="https://smile.amazon.com/MSGEQ7-Spectrum-Analyzer-Breakout-Stereo/dp/B08GY46BY8/ref=sr_1_2?dchild=1&keywords=MSGEQ7&qid=1609786663&sr=8-2">Amazon</a>|
 |-|-|
-|<a href="https://www.ebay.com/itm/MSGEQ7-breakout-board-7-band-graphic-equalizer-for-audio-for-Arduino-or-RPi/353131861821?hash=item52384c973d:g:L3sAAOSwt4xfOK08"><img src="https://i.ebayimg.com/images/g/XMoAAOSw0e9UwT9y/s-l300.jpg" width="320"></a>|<a href="https://smile.amazon.com/MSGEQ7-Spectrum-Analyzer-Breakout-Stereo/dp/B08GY46BY8/ref=sr_1_2?dchild=1&keywords=MSGEQ7&qid=1609786663&sr=8-2"><img src="https://images-na.ssl-images-amazon.com/images/I/816hNJK1coL._SL1500_.jpg" width="320"></a>|
+|<a href="https://www.ebay.com/itm/256192596092"><img src="https://i.ebayimg.com/images/g/JJUAAOSw40Vk5Qdl/s-l1600.webp" width="320"></a>|<a href="https://smile.amazon.com/MSGEQ7-Spectrum-Analyzer-Breakout-Stereo/dp/B08GY46BY8/ref=sr_1_2?dchild=1&keywords=MSGEQ7&qid=1609786663&sr=8-2"><img src="https://images-na.ssl-images-amazon.com/images/I/816hNJK1coL._SL1500_.jpg" width="320"></a>|
 
 <b>ESP8266</b> dev board:<br>(<i>probably</i> any microcontroller supported by Arduino IDE will work)<br>(if you get one with pins pre-soldered, you can use jumper wires to connect the leds to the board)<br>(Otherwise, you will need to know how to solder on a connector of some kind)
 
