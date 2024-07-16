@@ -83,8 +83,8 @@ void saveBands(uint16_t in){
 }
 void analyzeBands(){
   
-  bool bb = true;
-  bool bt = true;
+  static bool bb = true;
+  static bool bt = true;
   byte newBass = 0;
   byte newTreb = 6;
   
